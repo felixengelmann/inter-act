@@ -1,9 +1,9 @@
 library(tidyr)
 library(dplyr)
 
-###############################################################
+***REMOVED******REMOVED******REMOVED******REMOVED******REMOVED***###
 ## Global parameters
-###############################################################
+***REMOVED******REMOVED******REMOVED******REMOVED******REMOVED***###
 reset_params <- function(){
   lf        <<- 0.15       # latency factor
   le        <<- 1       # latency exponent
@@ -99,9 +99,9 @@ compute_cond_means <- function(results){
 }
 
 
-###############################################################
+***REMOVED******REMOVED******REMOVED******REMOVED******REMOVED***###
 ## RUN MODEL
-###############################################################
+***REMOVED******REMOVED******REMOVED******REMOVED******REMOVED***###
 #model <- model_4cond
 #iterations <- 2
 
@@ -230,9 +230,9 @@ run <- function(d){
 
 
 
-###############################################################
+***REMOVED******REMOVED******REMOVED******REMOVED******REMOVED***###
 ## ACT-R
-###############################################################
+***REMOVED******REMOVED******REMOVED******REMOVED******REMOVED***###
 activation <- function(Pij=matrix(c(1,1),1,2,T), prom=0, weights=matrix(c(1,1),1,2,T), times=lp, b=blc, noise=act_r_noise(ans), W=ga, dec=bll, S=mas, P=mp, C1=pic, C2=psc){
   # base_act <- log(times^(-dec)) + bl
   baseact <- base_act(prom=prom, times=times, C1=C1, C2=C2, b=b, noise=noise, dec=dec)
@@ -317,9 +317,9 @@ noise_on <- function(){
 
 
 
-###############################################################
+***REMOVED******REMOVED******REMOVED******REMOVED******REMOVED***###
 ## Standard interference model with 4 conditions
-###############################################################
+***REMOVED******REMOVED******REMOVED******REMOVED******REMOVED***###
 model_4cond <- list(
 	target_fan = list(c(1,1), c(1,1), c(1,NA), c(1,NA)),
 	distractor_fan = list(c(NA,1), c(NA,NA), c(NA,1), c(NA,NA)),

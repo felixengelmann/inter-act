@@ -1,5 +1,5 @@
 # inter-ACT
-An R implementation of memory interference processes in linguistic dependency resolution based on ACT-R (Anderson et al., PsychRev, 2004) and the sentence comprehension model by Lewis and Vasishth (CogSci, 2005).  
+An R implementation of memory interference processes in linguistic dependency resolution based on ACT-R (Anderson et al., Psychological Review, 2004) and the sentence comprehension model by Lewis and Vasishth (Cognitive Science, 2005).  
 
 It includes a Shiny App that is hosted at https://engelmann.shinyapps.io/inter-act/.
 

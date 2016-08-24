@@ -36,12 +36,14 @@ reset_params <- function(){
   cuesim    <<- -1    # cue-feature similarity [-1..0]
   #
   # Fitted meta-parameters
-  medprom <<- 0
-  highprom <<- 2
-  distant <<- 1.3
-  recent <<- 0.7
-  depp <<- 0
-  methp <<- 0
+	meta_recent <<- 0.7
+	meta_distant <<- 1.3
+	meta_lowprom <<- -0.5
+	meta_medprom <<- 0
+	meta_highprom <<- 2.5
+	meta_memory <<- 1
+  meta_deptype <<- 0
+  meta_method <<- 0
   #
   VERBOSE <<- TRUE
 }
@@ -66,10 +68,10 @@ semWeight <- function(ratio=cueweighting, normalize=normalizeWeights){
 
 idnames <- c("Set","Iteration","Condition","Target","Distractor")
 actrnames <- c("weights","bl1","bl2","times1","times2","noise1","noise2","blact1","blact2","act1","act2","activation","latency","retrieved","acc","miss","fail")
-paramnames <- c("lf","le","rth","bll","ans","mas","mp","ga","rand_time","lp","blc","ldp","dbl","ndistr","cueweighting","psc","pic","qcf", "qco" ,"cuesim","tprom","dprom","distant","recent","medprom","highprom", "methp", "depp")
+paramnames <- c("lf","le","rth","bll","ans","mas","mp","ga","rand_time","lp","blc","ldp","dbl","ndistr","cueweighting","psc","pic","qcf", "qco" ,"cuesim","tprom","dprom")#,"meta_distant","recent","medprom","highprom", "methp", "depp")
 
 set_prameters <- function(){
-	parameters <<- list(lf,le,rth,bll,ans,mas,mp,ga,rand_time,lp,blc,ldp,dbl,ndistr,cueweighting,psc,pic,qcf, qco,cuesim,tprom,dprom,distant,recent,medprom,highprom, methp, depp)
+	parameters <<- list(lf,le,rth,bll,ans,mas,mp,ga,rand_time,lp,blc,ldp,dbl,ndistr,cueweighting,psc,pic,qcf, qco,cuesim,tprom,dprom)#,meta_distant,recent,medprom,highprom, methp, depp)
 	names(parameters) <<- paramnames
 }
 set_prameters()

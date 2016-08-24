@@ -1,5 +1,5 @@
 
-source("inter-act.r")
+source("interACT.R")
 reset_params()
 
 

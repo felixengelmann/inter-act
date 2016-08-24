@@ -14,18 +14,18 @@ options(dplyr.width = Inf)
 # source("helpers.r")
 # experiments <<- NULL
 source("experiment-data.r")
-source("inter-act.r")
+source("interACT.R")
 
 
 # Fitted meta-parameters
-fit_distant <<- 1.3
-fit_recent <<- 0.7
-fit_lowprom <<- -1
-fit_medprom <<- 0
-fit_highprom <<- 2.5
-fit_confRec <<- -0.5
-fit_confCN <<- -0.5
-fit_memory <<- 1
+meta_distant <<- 1.3
+meta_recent <<- 0.7
+meta_lowprom <<- -1
+meta_medprom <<- 0
+meta_highprom <<- 2.5
+meta_memory <<- 1
+meta_confRec <<- -0.5
+meta_confCN <<- -0.5
 
 # Others
 expname <<- "---"
@@ -38,8 +38,8 @@ iterations <- 5000
 # qcf <<- 1 # when qcf>0, base-level influences match-quality (and thus the fan)
 # psc <<- 1 # when psc>0, prominence influences base-level activation
 # rth <<- -4.5
-# lp <<- fit_distant
-# ldp <<- fit_recent
+# lp <<- meta_distant
+# ldp <<- meta_recent
 cl <- cuesim2cl()
 # lf <<- 0.2
 # bll <<- 0.5
@@ -51,18 +51,44 @@ cl <- cuesim2cl()
 # dprom <<- 0
 
 
+set_params_extended <- function(){
+  reset_params()
+  qcf <<- 10
+  psc <<- 1
+  rth <<- -4.5
+  mas <<- 1.5
+  mp <<- 0.25
+}
+
+set_params_classic <- function(){
+  reset_params()
+  qcf <<- 0
+  psc <<- 1
+  rth <<- -1.5
+  mas <<- 1
+  mp <<- 1
+}
+
+
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output, session) {
 
 values <- reactiveValues(p1=1, p2=2, p3=3, studyProperties="")
 
+
+  # ===========================
+  # Reset
+  # ===========================
   observe({
     if(input$reset){
-      reset_params()
-      qcf <<- 10
-      psc <<- 1
-      rth <<- -4.5
+      set_params_extended()
+      # reset_params()
+      # qcf <<- 10
+      # psc <<- 1
+      # rth <<- -4.5
+      # mas <<- 1.5
+      # mp <<- 0.25
       lp <<- 1
       ldp <<- 1
       cl <- cuesim2cl()
@@ -90,23 +116,31 @@ values <- reactiveValues(p1=1, p2=2, p3=3, studyProperties="")
       updateSliderInput(session, "iterations", value = iterations)
       updateSelectInput(session, "data", selected = expname)
       updateSelectInput(session, "setparams", selected = expname)
-      updateRadioButtons(session, "useDecay", selected = useDecay)
+      updateCheckboxInput(session, "useDecay", value = useDecay)
+      updateRadioButtons(session, "model", selected = "Extended")
     }
   })
 
+
+
+
+  # ===========================
+  # Fit experiment
+  # ===========================  
   observe({
     if(input$setparams!="---"){
-      reset_params()
+      set_params_extended()
+      # reset_params()
+      # qcf <<- 10
+      # psc <<- 1
+      # rth <<- -1.5
+      # mas <<- 1.5
+      # mp <<- 0.25
       lf <<- 0.1
       ans <<- 0.2
-      mas <<- 1.5
-      mp <<- 0.25
       cuesim <<- -1
-      qcf <<- 10
-      psc <<- 1
-      rth <<- -1.5
-      # lp <<- fit_distant
-      # ldp <<- fit_recent
+      # lp <<- meta_distant
+      # ldp <<- meta_recent
       cl <- cuesim2cl()
       useDecay <<- FALSE
       iterations=5000
@@ -114,17 +148,17 @@ values <- reactiveValues(p1=1, p2=2, p3=3, studyProperties="")
       expname <- input$setparams
       params <- getData(expname)[1,]
       # Interference type
-      if(params$IntType=="pro") {lp <<- fit_recent; ldp <<- fit_distant}
-      if(params$IntType=="retro") {lp <<- fit_distant; ldp <<- fit_recent}
+      if(params$IntType=="pro") {lp <<- meta_recent; ldp <<- meta_distant}
+      if(params$IntType=="retro") {lp <<- meta_distant; ldp <<- meta_recent}
       # Prominence
-      if(params$Prominence2=="subj_OR_topic") dprom <<- fit_medprom
-      if(params$Prominence2=="subj_AND_topic") dprom <<- fit_highprom
-      if(params$Prominence2=="other") dprom <<- fit_lowprom
+      if(params$Prominence2=="subj_OR_topic") dprom <<- meta_medprom
+      if(params$Prominence2=="subj_AND_topic") dprom <<- meta_highprom
+      if(params$Prominence2=="other") dprom <<- meta_lowprom
       # Cue confusion
-      if(params$DepType=="reci") cuesim <<- fit_confRec
-      if(params$DepType=="refl" & params$Lang=="CN") cuesim <<- fit_confCN
+      if(params$DepType=="reci") cuesim <<- meta_confRec
+      if(params$DepType=="refl" & params$Lang=="CN") cuesim <<- meta_confCN
       # Number of distractors
-      if(params$DistrPos=="memory_3x") ndistr <<- 3*fit_memory
+      if(params$DistrPos=="memory_3x") ndistr <<- 3*meta_memory
 
       # Study property text
       values$studyProperties <- paste(
@@ -151,66 +185,63 @@ values <- reactiveValues(p1=1, p2=2, p3=3, studyProperties="")
       updateSliderInput(session, "iterations", value = iterations)
       updateSelectInput(session, "data", selected = expname)
       updateSelectInput(session, "setparams", selected = expname)
-      updateRadioButtons(session, "useDecay", selected = useDecay)
+      updateCheckboxInput(session, "useDecay", value = useDecay)
+      updateRadioButtons(session, "model", selected = "Extended")
     }
 
   })
 
-  # observe({
-  #   if(input$setext){
-  #     reset_params()
-  #     pc <<- 5
-  #     cuesim <<- -0.45
-  #     lf <<- 0.15
-  #     rth <<- -1.5
-  #     ans <<- 0.15
-  #     mp <<- 1.5
-  #     ndistr <<- 1
-  #   }
-  #   updateSliderInput(session, "pc", value = pc)
-  #   updateSliderInput(session, "cl", value = cuesim2cl())
-  #   updateSliderInput(session, "cueweighting", value = cueweighting)
-  #   updateSliderInput(session, "dbl", value = dbl)
-  #   updateSliderInput(session, "ldp", value = ldp)
-  #   updateSliderInput(session, "lp", value = lp)
-  #   updateSliderInput(session, "nd", value = ndistr)
-  #   updateSliderInput(session, "lf", value = lf)
-  #   updateSliderInput(session, "rth", value = rth)
-  #   updateSliderInput(session, "ans", value = ans)
-  #   updateSliderInput(session, "mp", value = mp)
-  #   updateSliderInput(session, "mas", value = mas)
-  #   updateSliderInput(session, "ga", value = ga)
-  # })
 
+
+  # ===========================
+  # Preset interference type
+  # ===========================
   observe({
     if(input$intRet) {
-      updateSliderInput(session, "lp", value = fit_distant)
-      updateSliderInput(session, "ldp", value = fit_recent)
-    }
-  #   })
-  # observe({
-    if(input$intPro) {
-      updateSliderInput(session, "lp", value = fit_recent)
-      updateSliderInput(session, "ldp", value = fit_distant)
+      updateSliderInput(session, "lp", value = meta_distant)
+      updateSliderInput(session, "ldp", value = meta_recent)
     }
     })
 
+  observe({
+    if(input$intPro) {
+      updateSliderInput(session, "lp", value = meta_recent)
+      updateSliderInput(session, "ldp", value = meta_distant)
+    }
+    })
+
+
+
+  # ===========================
+  # Switch model
+  # ===========================
+  observe({
+    if(input$model == "Classic") {set_params_classic()} else {set_params_extended()}
+    updateSliderInput(session, "rth", value = rth)
+    updateSliderInput(session, "mas", value = mas)
+    updateSliderInput(session, "mp", value = mp)
+  })
+
+
+
+  # ===========================
+  # Output data table
+  # ===========================
   output$littable = renderDataTable({
-      # lit$i <- NULL
-      # lit$Set <- NULL
-      # lit$Mnum <- NULL
-      # lit$TypeClass <- NULL
-      # lit$Type2 <- NULL
-      # lit$PredOrig <- NULL
-      # lit$PromClass <- NULL
-      # lit$Subject <- NULL
       experiments %>% select(Id, Publication, DepType, TargetType, Effect, SE, VerbType, Lang, Method, Measure, WMC, Cue, IntType, Prominence=Prominence1)
     })
 
+
+
+  # ===========================
+  # Run model and generate plots
+  # ===========================
   update <- observe({
     runmodel <- input$runmodel
     iterations <- input$iterations
-    # qcf <<- input$qcf
+    # qcf <<- 10; psc <<- 1
+    if(input$model == "Classic") set_params_classic()
+    if(input$model == "Extended") set_params_extended()
     cuesim <<- cl2cuesim(input$cl)
     cueweighting <<- input$cueweighting
     dprom <<- input$dprom
@@ -235,8 +266,6 @@ values <- reactiveValues(p1=1, p2=2, p3=3, studyProperties="")
 
     # Latencies
     # ---------------------------
-    # meanResults <- select(results, Target, Distractor, latency
-
     (condPlot <- ggplot(results, aes(Distractor, latency, col=Target, group=Target))
       + stat_summary(fun.y="mean", geom="line")
       + stat_summary(fun.data="mean_cl_normal", size=.4, show.legend=FALSE)

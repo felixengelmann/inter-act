@@ -98,6 +98,10 @@ shinyUI(fluidPage(
             ,
 
             column(width=3,
+              radioButtons("model", "Switch model", 
+                choices=c("Classic", "Extended"),
+                selected="Extended"),
+              tags$b("Study Properties"),
               verbatimTextOutput("studyProperties"),
               sliderInput("dprom", "Distractor prominence", 
                 min = -4, max = 4, value = 0, step=0.25, 

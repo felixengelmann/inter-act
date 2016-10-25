@@ -3,7 +3,7 @@ library(dplyr)
 options(dplyr.width=Inf)
 library(ggplot2)
 
-source("interACT.r")
+source("interACT.R")
 
 
 #  ===========================

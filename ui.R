@@ -1,5 +1,5 @@
 library(shiny)
-source("experiment-data.r")
+source("load_data.R")
 
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(
@@ -9,10 +9,10 @@ shinyUI(fluidPage(
   # wellPanel(
   # flowLayout(
   HTML("<p>An R implementation of memory interference processes in linguistic dependency resolution based on ACT-R (Anderson et al., Psychological Review, 2004) and the sentence comprehension model by Lewis and Vasishth (Cognitive Science, 2005).
-    It features the extensions <b>Associative Cues</b> and <b>Distractor Prominence</b> as described in Engelmann (2016), 
-    <a href=\"http://journal.frontiersin.org/article/10.3389/fpsyg.2015.00617/abstract\">J&auml;ger, Engelmann, Vasishth (2015)</a>, 
-    and Engelmann, J&auml;ger, Vasishth: <i>Similarity-based interference in sentence comprehension:  A new computational model</i> (manuscript).
-    Experimental studies reported here are documented in J&auml;ger, Engelmann, Vasishth:
+    It features the extensions <b>Associative Cues</b> and <b>Distractor Prominence</b> as described in F. Engelmann (Doctoral Thesis, 2016), 
+    <a href=\"http://journal.frontiersin.org/article/10.3389/fpsyg.2015.00617/abstract\">L. J&auml;ger, F. Engelmann, and S. Vasishth (Frontiers in Psychology, 2015)</a>, 
+    and F. Engelmann, L. J&auml;ger, and S. Vasishth: <i>Similarity-based interference in sentence comprehension:  A new computational model</i> (manuscript).
+    Experimental studies reported here are documented in L. J&auml;ger, F. Engelmann, and S. Vasishth:
     <i>Similarity-based interference in sentence comprehension: A literature review and a Bayesian meta-analysis</i> (submitted). </p>"
     ),
 
@@ -99,7 +99,7 @@ shinyUI(fluidPage(
 
             column(width=3,
               radioButtons("model", "Switch model", 
-                choices=c("Classic", "Extended"),
+                choices=c("Classic LV05", "Extended"),
                 selected="Extended"),
               tags$b("Study Properties"),
               verbatimTextOutput("studyProperties"),

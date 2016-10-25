@@ -1,6 +1,5 @@
 # TODO: show activation of antecedent and distractor
 # TODO: Add effect size in numbers
-# TODO: Explanation
 
 
 library(shiny)
@@ -11,11 +10,15 @@ library(dplyr)
 library(Hmisc)
 options(dplyr.width = Inf)
 
-# source("helpers.r")
-# experiments <<- NULL
-source("experiment-data.r")
+source("load_data.R")
 source("interACT.R")
+simfit <- read.csv("simfit-batch-restr.csv")
 
+
+
+# ===========================
+# Preset parameters
+# =========================== 
 
 # Fitted meta-parameters
 meta_distant <<- 1.3
@@ -71,7 +74,10 @@ set_params_classic <- function(){
 
 
 
-# Define server logic required to draw a histogram
+
+# ===========================
+# Define server logic
+# =========================== 
 shinyServer(function(input, output, session) {
 
 values <- reactiveValues(p1=1, p2=2, p3=3, studyProperties="")
@@ -146,19 +152,32 @@ values <- reactiveValues(p1=1, p2=2, p3=3, studyProperties="")
       iterations=5000
       #
       expname <- input$setparams
-      params <- getData(expname)[1,]
-      # Interference type
-      if(params$IntType=="pro") {lp <<- meta_recent; ldp <<- meta_distant}
-      if(params$IntType=="retro") {lp <<- meta_distant; ldp <<- meta_recent}
-      # Prominence
-      if(params$Prominence2=="subj_OR_topic") dprom <<- meta_medprom
-      if(params$Prominence2=="subj_AND_topic") dprom <<- meta_highprom
-      if(params$Prominence2=="other") dprom <<- meta_lowprom
-      # Cue confusion
-      if(params$DepType=="reci") cuesim <<- meta_confRec
-      if(params$DepType=="refl" & params$Lang=="CN") cuesim <<- meta_confCN
-      # Number of distractors
-      if(params$DistrPos=="memory_3x") ndistr <<- 3*meta_memory
+      # params <- getData(expname)[1,]
+      params <- getParams(expname, dec=bll)
+      # params <- subset(simfit, Publication==expname & psc==1 & bll==dec)
+      lf <<- params$lf
+      rth <<- params$rth
+      mas <<- params$mas
+      mp <<- params$mp
+      bll <<- params$bll
+      lp <<- params$lp
+      ldp <<- params$ldp
+      dprom <<- params$dprom
+      cuesim <<- params$cuesim
+      ndistr <<- params$ndistr
+
+      # # Interference type
+      # if(params$IntType=="pro") {lp <<- meta_recent; ldp <<- meta_distant}
+      # if(params$IntType=="retro") {lp <<- meta_distant; ldp <<- meta_recent}
+      # # Prominence
+      # if(params$Prominence2=="subj_OR_topic") dprom <<- meta_medprom
+      # if(params$Prominence2=="subj_AND_topic") dprom <<- meta_highprom
+      # if(params$Prominence2=="other") dprom <<- meta_lowprom
+      # # Cue confusion
+      # if(params$DepType=="reci") cuesim <<- meta_confRec
+      # if(params$DepType=="refl" & params$Lang=="CN") cuesim <<- meta_confCN
+      # # Number of distractors
+      # if(params$DistrPos=="memory_3x") ndistr <<- 3*meta_memory
 
       # Study property text
       values$studyProperties <- paste(

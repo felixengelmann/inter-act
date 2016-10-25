@@ -41,6 +41,7 @@ reset_params <- function(){
 	meta_lowprom <<- -0.5
 	meta_medprom <<- 0
 	meta_highprom <<- 2.5
+	meta_conflevel <<- 0
 	meta_memory <<- 1
   meta_deptype <<- 0
   meta_method <<- 0
@@ -68,10 +69,12 @@ semWeight <- function(ratio=cueweighting, normalize=normalizeWeights){
 
 idnames <- c("Set","Iteration","Condition","Target","Distractor")
 actrnames <- c("weights","bl1","bl2","times1","times2","noise1","noise2","blact1","blact2","act1","act2","activation","latency","retrieved","acc","miss","fail")
-paramnames <- c("lf","le","rth","bll","ans","mas","mp","ga","rand_time","lp","blc","ldp","dbl","ndistr","cueweighting","psc","pic","qcf", "qco" ,"cuesim","tprom","dprom")#,"meta_distant","recent","medprom","highprom", "methp", "depp")
+paramnames <- c("lf","le","rth","bll","ans","mas","mp","ga","rand_time","lp","blc","ldp","dbl","ndistr","cueweighting","psc","pic","qcf", "qco" ,"cuesim","tprom","dprom" #,"meta_distant","meta_recent","meta_lowprom", "meta_medprom","meta_highprom", "meta_method", "meta_deptype"
+	)
 
 set_prameters <- function(){
-	parameters <<- list(lf,le,rth,bll,ans,mas,mp,ga,rand_time,lp,blc,ldp,dbl,ndistr,cueweighting,psc,pic,qcf, qco,cuesim,tprom,dprom)#,meta_distant,recent,medprom,highprom, methp, depp)
+	parameters <<- list(lf,le,rth,bll,ans,mas,mp,ga,rand_time,lp,blc,ldp,dbl,ndistr,cueweighting,psc,pic,qcf, qco,cuesim,tprom,dprom #,meta_distant,meta_recent,meta_lowprom,meta_medprom,meta_highprom, meta_method, meta_deptype
+		)
 	names(parameters) <<- paramnames
 }
 set_prameters()
@@ -166,7 +169,7 @@ create_param_matrix <- function(model, iterations=1000){
 run <- function(d){
 	if(VERBOSE) print("computing base-levels...")
 	# 
-	belowzeros <<- NULL
+	# belowzeros <<- NULL
 	total <- nrow(d)
 	d$times1 <- d$lp
 	d$times2 <- d$ldp
@@ -254,7 +257,7 @@ spreading_act <- function(Pij=matrix(c(1,1),1,2,T), S=mas){
 	Sji <- S+log(Pij)
   Sji <- ifelse(Sji==-Inf | is.na(Sji), 0, Sji)
   ifelse(Sji < 0, print("!!! WARNING: Sji < 0 !!!"), T)
-  belowzeros <<- ifelse(Sji < 0, T, F)
+  # belowzeros <<- ifelse(Sji < 0, T, F)
   Sji <- ifelse(Sji < 0, 0, Sji)
   Sji
 }

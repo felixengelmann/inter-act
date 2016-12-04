@@ -8,12 +8,12 @@ library(stringr)
 # Load experiment data
 # =========================== 
 experiments <- read.csv("MetaAnalysisData.reindexed.csv")
+experiments$Publication <- as.character(experiments$Publication)
+experiments$Publication[experiments$Publication == "VanDykeE2LoSyn"] <- "VanDyke07E2LoSyn"
 experiments <- experiments %>% separate(Method_Measure, c("Method", "Measure","WMC"), sep = "_") %>% arrange(ID, TargetType) %>% unite(ID_Pub, ID, Publication, remove = FALSE) %>% mutate(Effect = round(as.numeric(as.character(Effect))), SE = round(SE))
 
 experiments$Prominence2 <- factor(experiments$Prominence2, levels = c("other", "subj_OR_topic", "subj_AND_topic"), labels = c("OTHER", "subject OR topic", "subject AND topic"))
 experiments$DepType <- factor(experiments$DepType, labels = c("SV agreement", "SV nonagreement", "Reciprocals", "Reflexives"))
-experiments$Publication <- as.character(experiments$Publication)
-experiments$Publication[experiments$Publication == "VanDykeE2LoSyn"] <- "VanDyke07E2LoSyn"
 
 expnames <- c("---", as.character(unique(experiments$ID_Pub)))
 

@@ -119,14 +119,11 @@ qcf <<- 10
 psc <<- 1
 mas <<- 1.5
 mp <<- 0.25
-meta_lf <<- seq(.1,.25,.05)
+meta_lf <<- 0.2
 meta_conflevel <<- seq(10,100,10)
-# meta_lowprom <<- seq(-2.5,2.5,.5)
-# meta_medprom <<- seq(-2.5,2.5,.5)
-# meta_highprom <<- seq(-2.5,2.5,.5)
-meta_lowprom <<- seq(-3,-.5,.5)
-meta_medprom <<- seq(-1,1,.5)
-meta_highprom <<- seq(.5,3,.5)
+meta_lowprom <<- seq(-3,0,.5)
+meta_medprom <<- seq(-1,2,.5)
+meta_highprom <<- seq(1,4,.5)
 
 
 pdf("fit-new-decay-restr.pdf")
@@ -161,8 +158,8 @@ dev.off()
 
 allparams
 
-write.csv(allparams, "simfit-batch-restr.csv")
-write.csv(alldata, "simresults-batch-restr.csv")
+write.csv(allparams, "simfit-batch-restr.csv",row.names=FALSE, fileEncoding="UTF-8")
+write.csv(alldata, "simresults-batch-restr.csv", row.names=FALSE, fileEncoding="UTF-8")
 
 
 
@@ -172,23 +169,23 @@ write.csv(alldata, "simresults-batch-restr.csv")
 #' ===========================  
 
 #' Model and decay
-allparams %>% group_by(psc, bll) %>% summarise(mean(Fit), SE_Fit=sd(Fit)/sqrt(n()), mean(lf))
+allparams %>% group_by(psc, bll) %>% summarise(mean(Fit), SD_Fit=sd(Fit), mean(lf))
 
 #' Prominence
-allparams %>% filter(psc==1) %>% group_by(psc, bll, Prominence2) %>% summarise(mean(Fit), SE_Fit=sd(Fit)/sqrt(n()), mean(lf), mean(dprom))
+allparams %>% filter(psc==1) %>% group_by(psc, bll, Prominence2) %>% summarise(mean(Fit), SD_Fit=sd(Fit), mean(lf), mean(dprom))
 
-allparams %>% filter(psc==1, bll==0.5) %>% group_by(psc, Prominence2, DistrPos) %>% summarise(mean(Fit), SE_Fit=sd(Fit)/sqrt(n()), mean(lf), mean(dprom), sd(dprom)/sqrt(n()))
+allparams %>% filter(psc==1, bll==0.5) %>% group_by(psc, Prominence2, DistrPos) %>% summarise(mean(Fit), SD_Fit=sd(Fit), mean(lf), mean(dprom), sd(dprom)/sqrt(n()))
 
 #' Cuesim
-allparams %>% filter(psc==1) %>% group_by(psc, bll, Lang) %>% summarise(mean(Fit), SE_Fit=sd(Fit)/sqrt(n()), mean(lf), mean(cuesim), mean(dprom))
+allparams %>% filter(psc==1) %>% group_by(psc, bll, Lang) %>% summarise(mean(Fit), SD_Fit=sd(Fit), mean(lf), mean(cuesim), mean(dprom))
 
 #' DepType
-allparams %>% group_by(psc, DepType) %>% summarise(mean(Fit), SE_Fit=sd(Fit)/sqrt(n()), mean(lf), mean(cuesim), mean(dprom))
+allparams %>% group_by(psc, DepType) %>% summarise(mean(Fit), SD_Fit=sd(Fit), mean(lf), mean(cuesim), mean(dprom))
 
 #' Method
-allparams %>% group_by(psc, Method) %>% summarise(mean(Fit), SE_Fit=sd(Fit)/sqrt(n()), mean(lf), mean(cuesim), mean(dprom))
+allparams %>% group_by(psc, Method) %>% summarise(mean(Fit), SD_Fit=sd(Fit), mean(lf), mean(cuesim), mean(dprom))
 
 #' IntType and prominence
-allparams %>% group_by(psc, IntType) %>% summarise(mean(Fit), SE_Fit=sd(Fit)/sqrt(n()), mean(lf), mean(cuesim), mean(dprom))
+allparams %>% group_by(psc, IntType) %>% summarise(mean(Fit), SD_Fit=sd(Fit), mean(lf), mean(cuesim), mean(dprom))
 
 

@@ -12,7 +12,8 @@ experiments <- experiments %>% separate(Method_Measure, c("Method", "Measure","W
 
 experiments$Prominence2 <- factor(experiments$Prominence2, levels = c("other", "subj_OR_topic", "subj_AND_topic"), labels = c("OTHER", "subject OR topic", "subject AND topic"))
 experiments$DepType <- factor(experiments$DepType, labels = c("SV agreement", "SV nonagreement", "Reciprocals", "Reflexives"))
-levels(experiments$Publication)[levels(experiments$Publication) == "VanDykeE2LoSyn"] <- "VanDyke07E2LoSyn"
+experiments$Publication <- as.character(experiments$Publication)
+experiments$Publication[experiments$Publication == "VanDykeE2LoSyn"] <- "VanDyke07E2LoSyn"
 
 expnames <- c("---", as.character(unique(experiments$ID_Pub)))
 

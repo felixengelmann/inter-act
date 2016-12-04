@@ -8,12 +8,14 @@ shinyUI(fluidPage(
   titlePanel("Similarity-based interference in sentence comprehension"),
   # wellPanel(
   # flowLayout(
-  HTML("<p>An R implementation of memory interference processes in linguistic dependency resolution based on ACT-R (Anderson et al., Psychological Review, 2004) and the sentence comprehension model by Lewis and Vasishth (Cognitive Science, 2005).
-    It features the extensions <b>Associative Cues</b> and <b>Distractor Prominence</b> as described in F. Engelmann (Doctoral Thesis, 2016), 
-    <a href=\"http://journal.frontiersin.org/article/10.3389/fpsyg.2015.00617/abstract\">L. J&auml;ger, F. Engelmann, and S. Vasishth (Frontiers in Psychology, 2015)</a>, 
-    and F. Engelmann, L. J&auml;ger, and S. Vasishth: <i>Similarity-based interference in sentence comprehension:  A new computational model</i> (manuscript).
-    Experimental studies reported here are documented in L. J&auml;ger, F. Engelmann, and S. Vasishth:
-    <i>Similarity-based interference in sentence comprehension: A literature review and a Bayesian meta-analysis</i> (submitted). </p>"
+  HTML("<p>An R implementation of memory interference processes in linguistic dependency resolution based on ACT-R (Anderson et al., Psychological Review, 2004) and the sentence comprehension model by Lewis and Vasishth (Cognitive Science, 2005), featuring the extensions <b>Associative Cues</b> and <b>Distractor Prominence</b>.
+    This application accompanies the paper <a href=\"http://personalpages.manchester.ac.uk/staff/felix.engelmann/publications/EJV2016JML.doc.161204.pdf\">F. Engelmann, L. J&auml;ger, and S. Vasishth:  <i>The effect of prominence and cue association in retrieval processes: A computational account</i> (submitted)</a>.
+    Experimental studies reported here are documented in <a href=\"http://personalpages.manchester.ac.uk/staff/felix.engelmann/publications/JaegerEngelmannVasishth2016.pdf\">
+    L. J&auml;ger, F. Engelmann, and S. Vasishth:
+    <i>Similarity-based interference in sentence comprehension: Literature review and a Bayesian meta-analysis</i> (submitted)</a>. 
+    The extensions are also described in F. Engelmann (Doctoral Thesis, 2016) and
+    <a href=\"http://journal.frontiersin.org/article/10.3389/fpsyg.2015.00617/abstract\">L. J&auml;ger, F. Engelmann, and S. Vasishth (Frontiers in Psychology, 2015)</a>. 
+    </p>"
     ),
 
     # An extended cue-based retrieval model of interference in dependency resolution such as in reflexive-antecedent or subject-verb dependencies.
@@ -25,8 +27,6 @@ shinyUI(fluidPage(
     The interference effect is measured within Target-Match and Target-Mismatch conditions as the difference between Distractor-Match (high interference) and Distractor-Mismatch conditions (low interference). 
     A positive effect in retrieval latencies represents as slow-down (inhibition), a negative effect represents a speed-up (facilitation).
     ")
-  # HTML("The model and empirical data used for simulation are described in Engelmann, J&auml;ger, Vasishth, \"The Determinants of Retrieval Interference in Dependency Resolution: Review and Computational Modeling\" (submitted). The model is also featured in <a href=\"http://journal.frontiersin.org/article/10.3389/fpsyg.2015.00617/abstract\">J&auml;ger, Engelmann, Vasishth (2015)</a> and <a href=\"http://www.ling.uni-potsdam.de/~engelmann/publications/EngelmannJaegerVasishth-CUNY2015.pdf\">Engelmann, J&auml;ger, Vasishth (2015)</a>.")
-  # )
   ,
 
   tabsetPanel(

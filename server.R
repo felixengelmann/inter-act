@@ -38,20 +38,7 @@ useDecay <<- TRUE
 reset_params()
 VERBOSE <<- FALSE
 iterations <- 5000
-# qcf <<- 1 # when qcf>0, base-level influences match-quality (and thus the fan)
-# psc <<- 1 # when psc>0, prominence influences base-level activation
-# rth <<- -4.5
-# lp <<- meta_distant
-# ldp <<- meta_recent
 cl <- cuesim2cl()
-# lf <<- 0.2
-# bll <<- 0.5
-# ans <<- 0.2
-# mas <<- 2
-# mp <<- 0
-# ndistr <<- 1
-# cuesim <<- -1
-# dprom <<- 0
 
 
 set_params_extended <- function(){
@@ -66,10 +53,11 @@ set_params_extended <- function(){
 set_params_classic <- function(){
   reset_params()
   qcf <<- 0
-  psc <<- 1
+  psc <<- 0
   rth <<- -1.5
   mas <<- 1
   mp <<- 1
+  # cuesim <<- -1
 }
 
 
@@ -136,25 +124,15 @@ values <- reactiveValues(p1=1, p2=2, p3=3, studyProperties="")
   observe({
     if(input$setparams!="---"){
       set_params_extended()
-      # reset_params()
-      # qcf <<- 10
-      # psc <<- 1
-      # rth <<- -1.5
-      # mas <<- 1.5
-      # mp <<- 0.25
       lf <<- 0.1
       ans <<- 0.2
       cuesim <<- -1
-      # lp <<- meta_distant
-      # ldp <<- meta_recent
       cl <- cuesim2cl()
-      useDecay <<- FALSE
+      useDecay <<- TRUE
       iterations=5000
       #
       expname <- input$setparams
-      # params <- getData(expname)[1,]
       params <- getParams(expname, dec=bll)
-      # params <- subset(simfit, Publication==expname & psc==1 & bll==dec)
       lf <<- params$lf
       rth <<- params$rth
       mas <<- params$mas
@@ -166,19 +144,6 @@ values <- reactiveValues(p1=1, p2=2, p3=3, studyProperties="")
       cuesim <<- params$cuesim
       ndistr <<- params$ndistr
 
-      # # Interference type
-      # if(params$IntType=="pro") {lp <<- meta_recent; ldp <<- meta_distant}
-      # if(params$IntType=="retro") {lp <<- meta_distant; ldp <<- meta_recent}
-      # # Prominence
-      # if(params$Prominence2=="subj_OR_topic") dprom <<- meta_medprom
-      # if(params$Prominence2=="subj_AND_topic") dprom <<- meta_highprom
-      # if(params$Prominence2=="other") dprom <<- meta_lowprom
-      # # Cue confusion
-      # if(params$DepType=="reci") cuesim <<- meta_confRec
-      # if(params$DepType=="refl" & params$Lang=="CN") cuesim <<- meta_confCN
-      # # Number of distractors
-      # if(params$DistrPos=="memory_3x") ndistr <<- 3*meta_memory
-
       # Study property text
       values$studyProperties <- paste(
         params$Lang, " ", params$DepType, ", ", params$VerbType, " 
@@ -187,6 +152,9 @@ values <- reactiveValues(p1=1, p2=2, p3=3, studyProperties="")
         sep="")
     
       # updateSliderInput(session, "qcf", value = qcf)
+      updateRadioButtons(session, "model", selected = "Extended")
+      updateSelectInput(session, "data", selected = expname)
+      updateCheckboxInput(session, "useDecay", value = useDecay)
       updateSliderInput(session, "cl", value = cuesim2cl())
       updateSliderInput(session, "cueweighting", value = cueweighting)
       updateSliderInput(session, "dprom", value = dprom)
@@ -202,10 +170,7 @@ values <- reactiveValues(p1=1, p2=2, p3=3, studyProperties="")
       updateSliderInput(session, "lp", value = lp)
       updateSliderInput(session, "ldp", value = ldp)
       updateSliderInput(session, "iterations", value = iterations)
-      updateSelectInput(session, "data", selected = expname)
-      updateSelectInput(session, "setparams", selected = expname)
-      updateCheckboxInput(session, "useDecay", value = useDecay)
-      updateRadioButtons(session, "model", selected = "Extended")
+      # updateSelectInput(session, "setparams", selected = expname)
     }
 
   })
@@ -235,10 +200,11 @@ values <- reactiveValues(p1=1, p2=2, p3=3, studyProperties="")
   # Switch model
   # ===========================
   observe({
-    if(input$model == "Classic") {set_params_classic()} else {set_params_extended()}
+    if(input$model == "Classic LV05") {set_params_classic()} else {set_params_extended()}
     updateSliderInput(session, "rth", value = rth)
     updateSliderInput(session, "mas", value = mas)
     updateSliderInput(session, "mp", value = mp)
+    # updateSliderInput(session, "cl", value = cuesim2cl())
   })
 
 
@@ -247,7 +213,7 @@ values <- reactiveValues(p1=1, p2=2, p3=3, studyProperties="")
   # Output data table
   # ===========================
   output$littable = renderDataTable({
-      experiments %>% select(Id, Publication, DepType, TargetType, Effect, SE, VerbType, Lang, Method, Measure, WMC, Cue, IntType, Prominence=Prominence1)
+      experiments %>% select(ID, Publication, Prominence=Prominence2, DepType, IntType, TargetType, `Effect (ms)` = Effect, SE, VerbType, Lang, Method, Measure, WMC, Cue, DistrPos) %>% arrange(ID, TargetType)
     })
 
 
@@ -258,8 +224,7 @@ values <- reactiveValues(p1=1, p2=2, p3=3, studyProperties="")
   update <- observe({
     runmodel <- input$runmodel
     iterations <- input$iterations
-    # qcf <<- 10; psc <<- 1
-    if(input$model == "Classic") set_params_classic()
+    if(input$model == "Classic LV05") set_params_classic()
     if(input$model == "Extended") set_params_extended()
     cuesim <<- cl2cuesim(input$cl)
     cueweighting <<- input$cueweighting

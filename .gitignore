@@ -2,3 +2,7 @@
 *.sublime-project
 
 *.sublime-workspace
+
+secret_connect.r
+
+rsconnect/shinyapps.io/engelmann/inter-act.dcf

@@ -3,7 +3,7 @@ An R implementation of memory interference processes in linguistic dependency re
 
 It includes a Shiny App that is hosted at https://engelmann.shinyapps.io/inter-act/.
 
-Experimental studies reported here are documented in [L. J&auml;ger, F. Engelmann, and S. Vasishth: *Similarity-based interference in sentence comprehension: Literature review and a Bayesian meta-analysis* (re-submitted)](http://personalpages.manchester.ac.uk/staff/felix.engelmann/publications/JaegerEngelmannVasishth2016.pdf).
+Experimental studies reported here are documented in [L. J&auml;ger, F. Engelmann, and S. Vasishth: *Lena A. Jäger, Felix Engelmann, and Shravan Vasishth. Similarity-based interference in sentence comprehension: Literature review and Bayesian meta-analysis. Journal of Memory and Language, 94:316-339, 2017.](http://www.sciencedirect.com/science/article/pii/S0749596X17300049).
 
 The extensions Associative Cues and Distractor Prominence are also featured in
 F. Engelmann (Doctoral Thesis, 2016) and 

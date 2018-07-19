@@ -8,19 +8,20 @@
 #' Assign meta parameter values according to design
 #' ---------------------------
 # assign_meta_parameters <- function(dat){
-	design <- dat %>% select(-(ExpID:Id), -(Effect:Target), -Prominence1) %>% slice(1)
+	design <- dat %>% select(-ExpID, -(Effect:Target), -Id) %>% slice(1)
 # Interference type (linear order)
 	if(design$IntType=="pro") {lp <<- meta_recent; ldp <<- meta_distant}
 	if(design$IntType=="retro") {lp <<- meta_distant; ldp <<- meta_recent}
 # Latency factor
 	lf <<- meta_lf
-	if(psc==1) lf <<- 0.2
-	if(psc==1 & design$DepType=="refl") lf <<- 0.15
+	# if(psc==1) lf <<- 0.2
+	# if(psc==1 & design$DepType=="refl") lf <<- 0.15
 
 # Prominence
-	if(design$Prominence2=="subj_OR_topic") dprom <<- meta_medprom
-	if(design$Prominence2=="subj_AND_topic") dprom <<- meta_highprom
-	if(design$Prominence2=="other") dprom <<- meta_lowprom
+	# dprom = 0
+	# if(design$Prominence2=="subj_OR_topic") dprom <<- meta_medprom
+	# if(design$Prominence2=="subj_AND_topic") dprom <<- meta_highprom
+	# if(design$Prominence2=="other") dprom <<- meta_lowprom
 # Number of distractors
 	if(design$DistrPos=="memory_3x") ndistr <<- 3*meta_memory else ndistr <<- 1
 # Cue confusion
@@ -36,6 +37,16 @@
 #' Run simulations
 #' =========================== 
 #' Prepare simulation matrix
+
+# sims <- NULL
+
+# for(dprom in meta_lowprom){
+# 	print(dprom)
+# 	sims_tmp <- create_param_matrix(model_4cond, 5000)
+# 	if(!is.null(sims)) sims_tmp$Set = sims_tmp$Set + max(sims$Set)
+# 	sims <- bind_rows(sims, sims_tmp)
+# }
+
 sims <- create_param_matrix(model_4cond, 5000)
 (n_sims <- nrow(sims))
 
@@ -101,7 +112,7 @@ bestModel <- bind_rows(bestModel, dat1) %>% mutate(Dataset = factor(Dataset, lev
 params <- select(bestModel, Set, lf, rth, mas, mp, bll, lp, ldp, psc, qcf, cuesim, dprom, cueweighting, ndistr) %>% slice(1) %>% bind_cols(design) %>% mutate(Fit = bestdist, Fit_Match = bestfitByTarget$Match, Fit_Mismatch = bestfitByTarget$Mismatch, R = bestsetfit$R)
 
 #' Data and predictions
-datapred <- select(bestModel, Target, Effect, SE, Dataset, bll, psc, qcf) %>% cbind(design)
+datapred <- select(bestModel, Target, Effect, SE, Dataset, bll, psc, qcf, dprom) %>% cbind(design)
 
 
 

@@ -155,8 +155,6 @@ create_param_matrix <- function(model, iterations=1000){
 	d$Condition <- rep(condnames, each=n_sets)
 	d$Target <- rep(model$Target, each=n_sets)
 	d$Distractor <- rep(model$Distractor, each=n_sets)
-	# d$fan1 <- rep(model$target_fan, each=n_sets)
-	# d$fan2 <- rep(model$distractor_fan, each=n_sets)
 	d$match1 <- rep(model$target_match, each=n_sets)
 	d$match2 <- rep(model$distractor_match, each=n_sets)
 	d$Iteration <- rep(1:iterations, each=n_sets*n_cond)
@@ -326,8 +324,6 @@ noise_on <- function(){
 ## Standard interference model with 4 conditions
 ###############################################################
 model_4cond <- list(
-	target_fan = list(c(1,1), c(1,1), c(1,NA), c(1,NA)),
-	distractor_fan = list(c(NA,1), c(NA,NA), c(NA,1), c(NA,NA)),
 	target_match = list(c(1,1), c(1,1), c(1,0), c(1,0)),
 	distractor_match = list(c(0,1), c(0,0), c(0,1), c(0,0)),
 	Target = c("Match","Match","Mismatch","Mismatch"),

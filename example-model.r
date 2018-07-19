@@ -6,8 +6,6 @@ reset_params()
 # Standard interference model with 4 conditions
 # ---------------------------------------------
 model_4cond <- list(
-	target_fan = list(c(1,1), c(1,1), c(1,NA), c(1,NA)),
-	distractor_fan = list(c(NA,1), c(NA,NA), c(NA,1), c(NA,NA)),
 	target_match = list(c(1,1), c(1,1), c(1,0), c(1,0)),
 	distractor_match = list(c(0,1), c(0,0), c(0,1), c(0,0)),
 	Target = c("Match","Match","Mismatch","Mismatch"),

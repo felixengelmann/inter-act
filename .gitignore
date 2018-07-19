@@ -8,3 +8,6 @@ secret_connect.r
 rsconnect/shinyapps.io/engelmann/inter-act.dcf
 
 bak/*
+.Rapp.history
+
+.Rhistory

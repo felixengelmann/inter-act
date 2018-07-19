@@ -207,8 +207,8 @@ run <- function(d){
 	# 
 	## Activations
 	if(VERBOSE) print("computing activations...")
-  d$act1 <- d$blact1 + weight_spreading_act(Sji=Sj1, weights=weights*cueconf1, W=d$ga) + mismatch_penalty(Pij=P1j, P=d$mp) + d$noise1
-  d$act2 <- d$blact2 + weight_spreading_act(Sji=Sj2, weights=weights*cueconf2, W=d$ga) + mismatch_penalty(Pij=P2j, P=d$mp) + d$noise2
+  d$act1 <- d$blact1 + weight_spreading_act(Sji=Sj1, weights=weights*cueconf1, W=d$ga) + mismatch_penalty(cuematch=match1, P=d$mp) + d$noise1
+  d$act2 <- d$blact2 + weight_spreading_act(Sji=Sj2, weights=weights*cueconf2, W=d$ga) + mismatch_penalty(cuematch=match2, P=d$mp) + d$noise2
   
 	##
 	## FINAL VALUES
@@ -265,9 +265,9 @@ weight_spreading_act <- function(Sji=matrix(c(0,0),1,2,T), weights=matrix(c(1,1)
 	rowSums(Wkj*Sji)
 }
 
-mismatch_penalty <- function(Pij=matrix(c(1,1),1,2,T), P=mp){
-	penalty <- Pij-1
-	# penalty <- ifelse(Pij==0, -1, 0)
+mismatch_penalty <- function(cuematch=matrix(c(1,1),1,2,T), P=mp){
+	penalty <- cuematch-1
+	# penalty <- ifelse(cuematch==0, -1, 0)
   Pi <- rowSums(P*penalty)
   Pi
 }

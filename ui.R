@@ -8,12 +8,11 @@ shinyUI(fluidPage(
   titlePanel("Similarity-based interference in sentence comprehension"),
   # wellPanel(
   # flowLayout(
-  HTML("<p>An R implementation of memory interference processes in linguistic dependency resolution based on ACT-R (Anderson et al., Psychological Review, 2004) and the sentence comprehension model by Lewis and Vasishth (Cognitive Science, 2005), featuring the extensions <b>Associative Cues</b> and <b>Distractor Prominence</b>.
-    This application accompanies the paper <a href=\"http://personalpages.manchester.ac.uk/staff/felix.engelmann/publications/EJV2016JML.doc.161204.pdf\">F. Engelmann, L. J&auml;ger, and S. Vasishth:  <i>The effect of prominence and cue association in retrieval processes: A computational account</i> (submitted)</a>.
-    Experimental studies reported here are documented in <a href=\"http://personalpages.manchester.ac.uk/staff/felix.engelmann/publications/JaegerEngelmannVasishth2016.pdf\">
-    L. J&auml;ger, F. Engelmann, and S. Vasishth:
-    <i>Similarity-based interference in sentence comprehension: Literature review and a Bayesian meta-analysis</i> (submitted)</a>. 
-    The extensions are also described in F. Engelmann (Doctoral Thesis, 2016) and
+  HTML("<p>An R implementation of memory interference processes in linguistic dependency resolution based on ACT-R (Anderson et al., Psychological Review, 2004) and the sentence comprehension model by Lewis and Vasishth (Cognitive Science, 2005), featuring the extensions <b>Multi-Associative Cues</b> and <b>Item Prominence</b>.
+    This application accompanies the paper <a href=\"https://osf.io/b56qv/\">F. Engelmann, L. J&auml;ger, and S. Vasishth: <i>The effect of prominence and cue association in retrieval processes: A computational account</i> (submitted)</a>.
+    Experimental studies reported here are documented in <a href=\"http://dx.doi.org/10.1016/j.jml.2017.01.004\">
+    L. J&auml;ger, F. Engelmann, and S. Vasishth (2017)</a>. 
+    The extensions are also described in <a href=\"https://publishup.uni-potsdam.de/frontdoor/index/index/docId/10086\"> F. Engelmann (Doctoral Thesis, 2016)</a> and
     <a href=\"http://journal.frontiersin.org/article/10.3389/fpsyg.2015.00617/abstract\">L. J&auml;ger, F. Engelmann, and S. Vasishth (Frontiers in Psychology, 2015)</a>. 
     </p>"
     ),
@@ -93,7 +92,8 @@ shinyUI(fluidPage(
             column(width=6,
                 plotOutput("plot1", width=350, height=300),
                 plotOutput("plot2", width=350, height=300),
-                plotOutput("plot3", width=350, height=300)
+                plotOutput("plot3", width=350, height=300),
+                plotOutput("plot4", width=350, height=300)
                 )
             ,
 

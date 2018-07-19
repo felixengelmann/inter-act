@@ -12,7 +12,7 @@ options(dplyr.width = Inf)
 
 source("load_data.R")
 source("interACT.R")
-simfit <- read.csv("simfit-batch-restr.csv")
+# simfit <- read.csv("simfit-batch-restr2.csv")
 
 
 
@@ -68,14 +68,14 @@ set_params_classic <- function(){
 # =========================== 
 shinyServer(function(input, output, session) {
 
-values <- reactiveValues(p1=1, p2=2, p3=3, studyProperties="")
+values <- reactiveValues(p1=1, p2=2, p3=3, p4=4, studyProperties="")
 
 
   # ===========================
   # Reset
   # ===========================
-  observe({
-    if(input$reset){
+  observeEvent(input$reset, {
+    # if(input$reset){
       set_params_extended()
       # reset_params()
       # qcf <<- 10
@@ -112,7 +112,7 @@ values <- reactiveValues(p1=1, p2=2, p3=3, studyProperties="")
       updateSelectInput(session, "setparams", selected = expname)
       updateCheckboxInput(session, "useDecay", value = useDecay)
       updateRadioButtons(session, "model", selected = "Extended")
-    }
+    # }
   })
 
 
@@ -121,7 +121,7 @@ values <- reactiveValues(p1=1, p2=2, p3=3, studyProperties="")
   # ===========================
   # Fit experiment
   # ===========================  
-  observe({
+  observeEvent(input$setparams, {
     if(input$setparams!="---"){
       set_params_extended()
       lf <<- 0.1
@@ -129,6 +129,7 @@ values <- reactiveValues(p1=1, p2=2, p3=3, studyProperties="")
       cuesim <<- -1
       cl <- cuesim2cl()
       useDecay <<- TRUE
+      if(!useDecay) bll <<- 0 else bll <<- 0.5
       iterations=5000
       #
       expname <- input$setparams
@@ -180,18 +181,18 @@ values <- reactiveValues(p1=1, p2=2, p3=3, studyProperties="")
   # ===========================
   # Preset interference type
   # ===========================
-  observe({
-    if(input$intRet) {
+  observeEvent(input$intRet, {
+    # if(input$intRet) {
       updateSliderInput(session, "lp", value = meta_distant)
       updateSliderInput(session, "ldp", value = meta_recent)
-    }
+    # }
     })
 
-  observe({
-    if(input$intPro) {
+  observeEvent(input$intPro, {
+    # if(input$intPro) {
       updateSliderInput(session, "lp", value = meta_recent)
       updateSliderInput(session, "ldp", value = meta_distant)
-    }
+    # }
     })
 
 
@@ -199,11 +200,11 @@ values <- reactiveValues(p1=1, p2=2, p3=3, studyProperties="")
   # ===========================
   # Switch model
   # ===========================
-  observe({
+  observeEvent(input$model, {
     if(input$model == "Classic LV05") {set_params_classic()} else {set_params_extended()}
-    updateSliderInput(session, "rth", value = rth)
-    updateSliderInput(session, "mas", value = mas)
-    updateSliderInput(session, "mp", value = mp)
+    # updateSliderInput(session, "rth", value = rth)
+    # updateSliderInput(session, "mas", value = mas)
+    # updateSliderInput(session, "mp", value = mp)
     # updateSliderInput(session, "cl", value = cuesim2cl())
   })
 
@@ -213,7 +214,7 @@ values <- reactiveValues(p1=1, p2=2, p3=3, studyProperties="")
   # Output data table
   # ===========================
   output$littable = renderDataTable({
-      experiments %>% select(ID, Publication, Prominence=Prominence2, DepType, IntType, TargetType, `Effect (ms)` = Effect, SE, VerbType, Lang, Method, Measure, WMC, Cue, DistrPos) %>% arrange(ID, TargetType)
+      experiments %>% select(ID, Publication, Prominence=Prominence2, DepType, IntType, TargetType, `Effect (ms)` = Effect, SE, VerbType, Lang, Method, Measure, Cue, DistrPos) %>% arrange(ID, TargetType)
     })
 
 
@@ -318,6 +319,23 @@ values <- reactiveValues(p1=1, p2=2, p3=3, studyProperties="")
 
     values$accPlot <- accPlot
 
+
+    # Activation
+    # ---------------------------
+    actResults <- results %>% 
+      gather(Item, Activation, act1, act2) %>% 
+      select(Target, Distractor, Item, Activation) %>% 
+      mutate(Item = factor(Item, levels=c("act1","act2"), labels=c("Target","Distractor")), Target = factor(Target, labels=c("Target-Match", "Target-Mismatch"))) %>% group_by(Target, Distractor, Item) %>% summarise_each(funs("mean"))
+
+    (actPlot <- ggplot(actResults, aes(Distractor, Activation, fill=Item, group=Item))
+      + geom_hline(aes(yintercept=0), colour="gray10")
+      + geom_bar(stat="identity", position = position_dodge(0.9))
+      + scale_fill_brewer(palette="Set1", direction=-1)
+      + ggtitle("Item Activation")
+      + facet_wrap(~Target)
+      )
+
+    values$actPlot <- actPlot
   })
 
 
@@ -337,6 +355,10 @@ values <- reactiveValues(p1=1, p2=2, p3=3, studyProperties="")
 
   output$plot3 <- renderPlot({
     values$accPlot
+  })
+
+  output$plot4 <- renderPlot({
+    values$actPlot
   })
 
 

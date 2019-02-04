@@ -244,6 +244,13 @@ values <- reactiveValues(p1=1, p2=2, p3=3, p4=4, studyProperties="")
 
     values$studyProperties <- ""
 
+    ###############################################################
+    ## Fix to allow structural cue ratio to vary with slider
+    ## Standard interference model with 4 conditions
+    ## (Fixed by Brian Dillon)
+    ###############################################################
+    model_4cond$weights <- c(strWeight(), semWeight()) 
+    
     sets <- create_param_matrix(model_4cond, iterations=iterations)
     results <- run(sets)
     # means_int <- simMeans <- compute_int_means(results)

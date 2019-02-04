@@ -8,3 +8,6 @@ Experimental studies reported here are documented in [L. J&auml;ger, F. Engelman
 The extensions Multi-Associative Cues and Item Prominence are also featured in
 [F. Engelmann (Doctoral Thesis, 2016)](https://publishup.uni-potsdam.de/frontdoor/index/index/docId/10086) and 
 [L. J&auml;ger, F. Engelmann, and S. Vasishth (Frontiers in Psychology, 2015)](http://journal.frontiersin.org/article/10.3389/fpsyg.2015.00617/abstract).
+
+---
+*Feb 4, 2019 - Thanks to Brian Dillon for fixing a bug in the app that prevented cue weights from affecting the model.*
